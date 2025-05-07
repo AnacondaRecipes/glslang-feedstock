@@ -19,7 +19,6 @@ build:
 
 requirements:
   build:
-    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
@@ -27,7 +26,7 @@ requirements:
     # Needed as a build tool
     - python 3.12
   host:
-    - spirv-tools
+    - spirv-tools 2025.1
   run:
 
 test:
@@ -44,7 +43,11 @@ test:
 
 about:
   home: https://github.com/KhronosGroup/glslang
+  dev_url: https://github.com/KhronosGroup/glslang
+  doc_url: https://github.com/KhronosGroup/glslang
   summary: Glslang Components and Status
+  description: |
+    Khronos-reference front end for GLSL/ESSL, partial front end for HLSL, and a SPIR-V generator.
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE.txt
