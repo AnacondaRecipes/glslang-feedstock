@@ -23,7 +23,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
-    - ninja
+    - ninja-base
     # Needed as a build tool
     - python 3.12
   host:
