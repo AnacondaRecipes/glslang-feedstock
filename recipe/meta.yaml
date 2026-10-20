@@ -1,5 +1,5 @@
 {% set name = "glslang" %}
-{% set version = "15.3.0" %}
+{% set version = "16.6.0" %}
 
 package:
   name: {{ name }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/KhronosGroup/{{ name }}/archive/{{ version }}.tar.gz
-  sha256: c6c21fe1873c37e639a6a9ac72d857ab63a5be6893a589f34e09a6c757174201
+  sha256: 9c09b901149c729df745057dafa815278aaa101b84d2b6e14f16a42de52f97f2
 
 build:
   skip: true  # [py!=312]
-  number: 1
+  number: 0
   run_exports:
     # They seem to use so names with the major version, so lets stick with that
     - {{ pin_subpackage('glslang', 'x') }}
@@ -32,8 +32,8 @@ requirements:
 test:
   commands:
     - glslangValidator --version
-    - test -f ${PREFIX}/lib/libglslang${SHLIB_EXT}             # [unix]
-    - test -f ${PREFIX}/lib/libSPIRV${SHLIB_EXT}               # [unix]
+    - test -f ${PREFIX}/lib/libglslang${SHLIB_EXT}  # [unix]
+    - test -f ${PREFIX}/lib/libSPIRV${SHLIB_EXT}  # [unix]
     # hmaarrfk: 2023/06
     # I'm not successful at building shared libraries on windows
     - if not exist %PREFIX%\\Library\\lib\\glslang.lib exit 1  # [win]
