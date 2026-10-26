@@ -1,5 +1,5 @@
 {% set name = "glslang" %}
-{% set version = "15.3.0" %}
+{% set version = "16.6.0" %}
 
 package:
   name: {{ name }}
@@ -7,11 +7,13 @@ package:
 
 source:
   url: https://github.com/KhronosGroup/{{ name }}/archive/{{ version }}.tar.gz
-  sha256: c6c21fe1873c37e639a6a9ac72d857ab63a5be6893a589f34e09a6c757174201
+  sha256: 9c09b901149c729df745057dafa815278aaa101b84d2b6e14f16a42de52f97f2
 
 build:
+  # python is only a build tool (intrinsic/header generation), not a runtime
+  # dependency; restrict to a single variant instead of building per python.
   skip: true  # [py!=312]
-  number: 1
+  number: 0
   run_exports:
     # They seem to use so names with the major version, so lets stick with that
     - {{ pin_subpackage('glslang', 'x') }}
@@ -20,6 +22,7 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
@@ -27,10 +30,16 @@ requirements:
     # Needed as a build tool
     - python 3.12
   host:
+    # upstream known_good.json references SPIRV-Tools v2026.4 (not yet in the
+    # channel); 2026.1 is linked via ALLOW_EXTERNAL_SPIRV_TOOLS
     - spirv-tools 2026.1
 
 test:
+  # Upstream gtests are not run here: they need the External/googletest and
+  # External/spirv-tools source trees plus the Test/ fixtures, which are not
+  # part of the release tarball. Smoke tests cover the installed binaries/libs.
   commands:
+    - glslang --version
     - glslangValidator --version
     - test -f ${PREFIX}/lib/libglslang${SHLIB_EXT}             # [unix]
     - test -f ${PREFIX}/lib/libSPIRV${SHLIB_EXT}               # [unix]
