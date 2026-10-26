@@ -10,8 +10,6 @@ source:
   sha256: 9c09b901149c729df745057dafa815278aaa101b84d2b6e14f16a42de52f97f2
 
 build:
-  # python is only a build tool (intrinsic/header generation), not a runtime
-  # dependency; restrict to a single variant instead of building per python.
   skip: true  # [py!=312]
   number: 0
   run_exports:
@@ -30,14 +28,9 @@ requirements:
     # Needed as a build tool
     - python 3.12
   host:
-    # upstream known_good.json references SPIRV-Tools v2026.4 (not yet in the
-    # channel); 2026.1 is linked via ALLOW_EXTERNAL_SPIRV_TOOLS
     - spirv-tools 2026.1
 
 test:
-  # Upstream gtests are not run here: they need the External/googletest and
-  # External/spirv-tools source trees plus the Test/ fixtures, which are not
-  # part of the release tarball. Smoke tests cover the installed binaries/libs.
   commands:
     - glslang --version
     - glslangValidator --version
